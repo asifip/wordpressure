@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: localdb
+      MYSQL_USER: azure
+      MYSQL_PASSWORD: 6#vWHD_$
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: azure
+      WORDPRESS_DB_PASSWORD: 6#vWHD_$
+      WORDPRESS_DB_NAME: localdb
+    volumes:
+      - ./wwwroot:/var/www/html
